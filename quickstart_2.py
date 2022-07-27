@@ -57,31 +57,20 @@ def main():
             raise Exception()
         
         # Get items within Recipe folder
-        pageSize = 2
+        pageSize = 10
         items = []
-
-        # Get page 1
-        results = service.files().list(
-            # This line will list folders in drive
-            pageSize=pageSize,
-            # pageToken=nextPageToken,
-            fields="nextPageToken, files(id, name)",
-            q="'0B3VD078tlYCcOFJUOWtUQ1JGSDg' in parents")\
-                .execute()
-
-        items += results.get('files', [])
-        nextPageToken = results.get('nextPageToken')
-        # Get all subsequent pages
-        while nextPageToken:
+        nextPageToken = None
+        while nextPageToken != 'Failure':
             results = service.files().list(
-                # This line will list folders in drive
+                # This line will list items in folder with ID recipe_id in drive
                 pageSize=pageSize,
                 pageToken=nextPageToken,
                 fields="nextPageToken, files(id, name)",
-                q="'0B3VD078tlYCcOFJUOWtUQ1JGSDg' in parents")\
+                q=f"'{recipe_id}' in parents")\
                     .execute()
+
             items += results.get('files', [])
-            nextPageToken = results.get('nextPageToken')
+            nextPageToken = results.get('nextPageToken', 'Failure')
 
         # Print recipes if they exist
         if not items:
@@ -89,7 +78,6 @@ def main():
             return
         print('Files:')
         for index, item in enumerate(items):
-            # print(u'{0} ({1})'.format(item['name'], item['id']))
             print(f"{index}, {item['name']}, {item['id']}")
     except HttpError as error:
         # TODO(developer) - Handle errors from drive API.

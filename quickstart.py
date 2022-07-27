@@ -52,8 +52,8 @@ def main():
             print('No files found.')
             return
         print('Files:')
-        # for item in items:
-        #     print(u'{0} ({1})'.format(item['name'], item['id']))
+        for item in items:
+            print(u'{0} ({1})'.format(item['name'], item['id']))
     except HttpError as error:
         # TODO(developer) - Handle errors from drive API.
         print(f'An error occurred: {error}')
