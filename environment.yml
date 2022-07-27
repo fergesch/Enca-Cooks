@@ -1,0 +1,11 @@
+name: enca-cooks
+dependencies:
+  - numpy
+  - pandas
+  - flask
+  - pip
+  - pip:
+    - todoist-api-python
+    - google-api-python-client
+    - google-auth-httplib2
+    - google-auth-oauthlib
