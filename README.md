@@ -11,6 +11,10 @@
 - `conda env create -f environment.yml --prefix ./.venv`
 - `conda activate /Users/michaelferguson/Github/Enca-Cooks/.venv` or `conda activate ./.venv`
 
+# Local Credentials
+- Local credentials must be added to a `credentials.json` file which can be generated or downloaded here https://console.cloud.google.com/apis/credentials?project=enca-cooks
+- Test users must be added to OAuth test users https://console.cloud.google.com/apis/credentials/consent?project=enca-cooks
+
 # Important Links
 | Link | Comment |
 | - | - |
