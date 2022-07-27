@@ -38,22 +38,59 @@ def main():
         service = build('drive', 'v3', credentials=creds)
 
         # Call the Drive v3 API
+        # Get the ID for recipe folder
         results = service.files().list(
             # This line will list folders in drive
-            pageSize=1000, fields="nextPageToken, files(id, name)", q="mimeType = 'application/vnd.google-apps.folder'").execute()
+            pageSize=10,
+            fields="nextPageToken, files(id, name)",
+            q="mimeType = 'application/vnd.google-apps.folder' and name = 'Recipes'")\
+                .execute()
             # This line will list folders in folder '0B3VD078tlYCcOFJUOWtUQ1JGSDg' which is 'Recipes' ID
             # pageSize=pageSize, pageToken=nextPageToken, fields="nextPageToken, files(id, name)", q="'0B3VD078tlYCcOFJUOWtUQ1JGSDg' in parents").execute()
         items = results.get('files', [])
-        print(results.get('nextPageToken'))
-        print(results.keys())
+        # print(results.get('nextPageToken', 'BUTTS'))
 
+        if len(items) == 1:
+            recipe_id = items[0]['id']
+            print('The Recipes ID is', recipe_id)
+        else:
+            raise Exception()
+        
+        # Get items within Recipe folder
+        pageSize = 2
+        items = []
 
+        # Get page 1
+        results = service.files().list(
+            # This line will list folders in drive
+            pageSize=pageSize,
+            # pageToken=nextPageToken,
+            fields="nextPageToken, files(id, name)",
+            q="'0B3VD078tlYCcOFJUOWtUQ1JGSDg' in parents")\
+                .execute()
+
+        items += results.get('files', [])
+        nextPageToken = results.get('nextPageToken')
+        # Get all subsequent pages
+        while nextPageToken:
+            results = service.files().list(
+                # This line will list folders in drive
+                pageSize=pageSize,
+                pageToken=nextPageToken,
+                fields="nextPageToken, files(id, name)",
+                q="'0B3VD078tlYCcOFJUOWtUQ1JGSDg' in parents")\
+                    .execute()
+            items += results.get('files', [])
+            nextPageToken = results.get('nextPageToken')
+
+        # Print recipes if they exist
         if not items:
             print('No files found.')
             return
         print('Files:')
-        # for item in items:
-        #     print(u'{0} ({1})'.format(item['name'], item['id']))
+        for index, item in enumerate(items):
+            # print(u'{0} ({1})'.format(item['name'], item['id']))
+            print(f"{index}, {item['name']}, {item['id']}")
     except HttpError as error:
         # TODO(developer) - Handle errors from drive API.
         print(f'An error occurred: {error}')
