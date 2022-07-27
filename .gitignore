@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 credentials.json
-token.json
+token_drive.json
+token_docs.json
