@@ -114,6 +114,12 @@ def get_recipe(creds, recipe_id):
     except HttpError as err:
         print(err)
 
+def get_all_recipes():
+    creds = check_token()
+    recipe_folder = get_recipe_folder(creds)
+    recipes = get_recipes(creds, recipe_folder)
+    return(recipes)
+
 def main():
     creds = check_token()
     recipe_folder = get_recipe_folder(creds)
