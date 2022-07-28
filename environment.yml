@@ -1,9 +1,8 @@
 name: enca-cooks
 dependencies:
-  - numpy
-  - pandas
   - flask
   - ipykernel
+  - autopep8
   - pip
   - pip:
     - todoist-api-python
