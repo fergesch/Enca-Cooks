@@ -11,6 +11,20 @@
 - `conda env create -f environment.yml --prefix ./.venv`
 - `conda activate /Users/michaelferguson/Github/Enca-Cooks/.venv` or `conda activate ./.venv`
 
+# Flask App
+- `/templates`
+  - input template html files are 
+- `app.py` 
+  - routes for website
+
+## To run locally
+```
+export FLASK_APP=app
+export FLASK_ENV=development
+flask run
+```
+
+
 # Local Credentials
 - Local credentials must be added to a `credentials.json` file which can be generated or downloaded here https://console.cloud.google.com/apis/credentials?project=enca-cooks
 - Test users must be added to OAuth test users https://console.cloud.google.com/apis/credentials/consent?project=enca-cooks
