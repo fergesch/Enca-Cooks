@@ -3,6 +3,7 @@ dependencies:
   - numpy
   - pandas
   - flask
+  - ipykernel
   - pip
   - pip:
     - todoist-api-python
