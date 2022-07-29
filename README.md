@@ -33,5 +33,8 @@ flask run
 | Link | Comment |
 | - | - |
 | https://developers.google.com/drive/api/v3/reference/files/list | Documentation for Google Drive list files/folders endpoint |
+| https://developers.google.com/docs/api/reference/rest | Google docs rest api reference |
+| https://developers.google.com/docs/api/reference/rest/v1/documents/get | Google docs get documentation |
+| https://developers.google.com/docs/api/reference/rest/v1/documents/create | Google docs create documentation |
 | https://github.com/googleapis/google-api-python-client | Google API github page |
 | https://googleapis.github.io/google-api-python-client/docs/dyn/drive_v3.html | ugly google api docs |
