@@ -10,9 +10,12 @@ from googleapiclient.errors import HttpError
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = [
-  'https://www.googleapis.com/auth/drive.metadata.readonly',
-  'https://www.googleapis.com/auth/documents.readonly'
+    # 'https://www.googleapis.com/auth/drive.metadata.readonly',
+    'https://www.googleapis.com/auth/drive',
+    #   'https://www.googleapis.com/auth/documents.readonly',
+    'https://www.googleapis.com/auth/documents'
 ]
+
 
 def check_token():
     creds = None
@@ -35,8 +38,9 @@ def check_token():
     return(creds)
 
 
-def get_recipe_folder(creds):
+def get_recipe_folder():
     try:
+        creds = check_token()
         service = build('drive', 'v3', credentials=creds)
 
         # Call the Drive v3 API
@@ -46,9 +50,9 @@ def get_recipe_folder(creds):
             pageSize=10,
             fields="nextPageToken, files(id, name)",
             q="mimeType = 'application/vnd.google-apps.folder' and name = 'Recipes'")\
-                .execute()
-            # This line will list folders in folder '0B3VD078tlYCcOFJUOWtUQ1JGSDg' which is 'Recipes' ID
-            # pageSize=pageSize, pageToken=nextPageToken, fields="nextPageToken, files(id, name)", q="'0B3VD078tlYCcOFJUOWtUQ1JGSDg' in parents").execute()
+            .execute()
+        # This line will list folders in folder '0B3VD078tlYCcOFJUOWtUQ1JGSDg' which is 'Recipes' ID
+        # pageSize=pageSize, pageToken=nextPageToken, fields="nextPageToken, files(id, name)", q="'0B3VD078tlYCcOFJUOWtUQ1JGSDg' in parents").execute()
         items = results.get('files', [])
         # print(results.get('nextPageToken', 'BUTTS'))
 
@@ -62,8 +66,10 @@ def get_recipe_folder(creds):
         # TODO(developer) - Handle errors from drive API.
         print(f'An error occurred: {error}')
 
-def get_recipes(creds, recipe_folder):
+
+def get_recipes(recipe_folder):
     try:
+        creds = check_token()
     # Get items within Recipe folder
         service = build('drive', 'v3', credentials=creds)
 
@@ -77,7 +83,7 @@ def get_recipes(creds, recipe_folder):
                 pageToken=nextPageToken,
                 fields="nextPageToken, files(id, name)",
                 q=f"'{recipe_folder}' in parents")\
-                    .execute()
+                .execute()
 
             items += results.get('files', [])
             nextPageToken = results.get('nextPageToken', 'Failure')
@@ -90,8 +96,10 @@ def get_recipes(creds, recipe_folder):
         # TODO(developer) - Handle errors from drive API.
         print(f'An error occurred: {error}')
 
-def get_recipe(creds, recipe_id):
+
+def get_recipe(recipe_id):
     try:
+        creds = check_token()
         service = build('docs', 'v1', credentials=creds)
 
         # Retrieve the documents contents from the Docs service.
@@ -103,7 +111,8 @@ def get_recipe(creds, recipe_id):
         }
         section = None
         for i in document.get('body').get('content')[1:]:
-            l = ''.join([j.get('textRun', {}).get('content') for j in i.get('paragraph', {}).get('elements')]).rstrip()
+            l = ''.join([j.get('textRun', {}).get('content')
+                        for j in i.get('paragraph', {}).get('elements')]).rstrip()
             if l.lower() in recipe_dict.keys():
                 section = l.lower()
             elif section and len(l) > 0:
@@ -114,23 +123,92 @@ def get_recipe(creds, recipe_id):
     except HttpError as err:
         print(err)
 
+
 def get_all_recipes():
-    creds = check_token()
-    recipe_folder = get_recipe_folder(creds)
-    recipes = get_recipes(creds, recipe_folder)
+    recipe_folder = get_recipe_folder()
+    recipes = get_recipes(recipe_folder)
     return(recipes)
 
-def main():
+
+def create_recipe(recipe_folder: str, title: str):
     creds = check_token()
-    recipe_folder = get_recipe_folder(creds)
+    service = build('docs', 'v1', credentials=creds)
+
+    document = service.documents().create(body={'title': title}).execute()
+
+    service = build('drive', 'v3', credentials=creds)
+    service.files().update(
+        fileId=document['documentId'], addParents=recipe_folder).execute()
+
+    return(document['documentId'])
+
+
+def fill_recipe(document_id, recipe_dict):
+    creds = check_token()
+    service = build('docs', 'v1', credentials=creds)
+
+    bullet_dict = {
+        'ingredients': 'BULLET_DISC_CIRCLE_SQUARE',
+        'instructions': 'NUMBERED_DECIMAL_ALPHA_ROMAN'
+    }
+
+    body_dict = {
+        'requests': []
+    }
+    index = 1
+    for key in recipe_dict.keys():
+        val = f"{key.capitalize()}\n"
+        body_dict['requests'].append(
+            {"insertText": {"endOfSegmentLocation": {}, "text": val}}
+        )
+        index += len(val)
+
+        start_index = index
+        for i in recipe_dict[key]:
+            val = f"{i.capitalize()}\n"
+            index += len(val)
+            body_dict['requests'].append(
+                {"insertText": {"endOfSegmentLocation": {}, "text": val}}
+            )
+        body_dict['requests'].append(
+            {
+                "createParagraphBullets": {
+                    "range": {"startIndex": start_index, "endIndex": index},
+                    "bulletPreset": bullet_dict[key]
+                }
+            }
+        )
+    service.documents().batchUpdate(documentId=document_id, body=body_dict).execute()
+
+
+def main():
+    recipe_folder = get_recipe_folder()
     print('The Recipe Folder ID is', recipe_folder)
 
-    recipes = get_recipes(creds, recipe_folder)
+    recipes = get_recipes(recipe_folder)
     for i in recipes:
         print(i)
-    
-    recipe = get_recipe(creds, recipes[0]['id'])
+
+    recipe = get_recipe(recipes[0]['id'])
     print(recipe)
+
+    new_recipe = create_recipe(recipe_folder, 'python food')
+    print('New recipe', new_recipe)
+
+    recipe_dict = {
+        'ingredients': [
+            '1 cup sugar',
+            '1/2 cup cocoa powder',
+            '1 stick butter'
+        ],
+        'instructions': [
+            'melt some stuff',
+            'mix a thing',
+            'bake it baby'
+        ]
+    }
+    fill_recipe(new_recipe, recipe_dict)
+
 
 if __name__ == '__main__':
     main()
