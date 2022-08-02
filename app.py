@@ -9,13 +9,19 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    return '<h1>Hello, World!</h1>'
+    # return '<h1>Hello, World!</h1>'
+    all_recipes = google_api.get_all_recipes()
+    recipes_sorted = sorted(all_recipes, key=lambda d: d['name'])
+    # return render_template('recipes.html', ordered_list('recipes', all_recipes))
+    return render_template('recipes.html', recipes=recipes_sorted)
 
 
 @app.route('/recipes')
 def recipes():
     all_recipes = google_api.get_all_recipes()
-    return(ordered_list('recipes', all_recipes))
+    recipes_sorted = sorted(all_recipes, key=lambda d: d['name'])
+    # return render_template('recipes.html', ordered_list('recipes', all_recipes))
+    return render_template('recipes.html', recipes=recipes_sorted)
 
 
 @app.route('/recipes/new')
@@ -41,6 +47,7 @@ def save_new_recipe():
 @app.route('/recipe/<recipe_name>/')
 def capitalize(recipe_name):
     all_recipes = google_api.get_all_recipes()
-    recipe = next((item for item in all_recipes if item["name"] == recipe_name), None)
+    recipe = next(
+        (item for item in all_recipes if item["name"] == recipe_name), None)
     recipe_dict = google_api.get_recipe(recipe['id'])
     return render_template('recipe.html', recipe_name=recipe_name, recipe_dict=recipe_dict)

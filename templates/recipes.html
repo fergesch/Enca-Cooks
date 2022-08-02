@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+
+<body>
+    <h1>Enca Cooks!</h1>
+    <h2>Recipes</h2>
+    <ul>
+        {% for value in recipes %}
+        <li> <a href="recipe/{{ value['name'] }}">{{ value['name'] }}</a> </li>
+        {% endfor %}
+    </ul>
+
+</body>
+
+</html>
