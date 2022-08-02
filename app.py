@@ -9,10 +9,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    # return '<h1>Hello, World!</h1>'
     all_recipes = google_api.get_all_recipes()
     recipes_sorted = sorted(all_recipes, key=lambda d: d['name'])
-    # return render_template('recipes.html', ordered_list('recipes', all_recipes))
     return render_template('recipes.html', recipes=recipes_sorted)
 
 
@@ -20,7 +18,6 @@ def hello():
 def recipes():
     all_recipes = google_api.get_all_recipes()
     recipes_sorted = sorted(all_recipes, key=lambda d: d['name'])
-    # return render_template('recipes.html', ordered_list('recipes', all_recipes))
     return render_template('recipes.html', recipes=recipes_sorted)
 
 
