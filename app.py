@@ -14,32 +14,33 @@ def hello():
 
 @app.route('/recipes')
 def recipes():
-  all_recipes = google_api.get_all_recipes()
-  return(ordered_list('recipes', all_recipes))
+    all_recipes = google_api.get_all_recipes()
+    return(ordered_list('recipes', all_recipes))
 
 
 @app.route('/recipes/new')
 def new_recipe():
-  return render_template('recipe_input.html')
+    return render_template('recipe_input.html')
 
 
 @app.route('/recipes/new', methods=['POST'])
 def save_new_recipe():
-  ingredients = request.form['ingredients']
-  ingredients_list = ingredients.split("\n")
-  formatted_ingredients = unordered_list("Ingredients", ingredients_list)
-  
-  instructions = request.form['instructions']
-  instructions_list = instructions.split("\n")
-  formatted_instructions = ordered_list("Instructions", instructions_list)
+    ingredients = request.form['ingredients']
+    ingredients_list = ingredients.split("\n")
+    formatted_ingredients = unordered_list("Ingredients", ingredients_list)
 
-  recipe_name = request.form['recipe_name']
-  
-  return wrap_in_tags("h1", recipe_name) + formatted_ingredients + formatted_instructions
+    instructions = request.form['instructions']
+    instructions_list = instructions.split("\n")
+    formatted_instructions = ordered_list("Instructions", instructions_list)
 
+    recipe_name = request.form['recipe_name']
 
-@app.route('/recipes/recipe/<recipes_name>/')
-def capitalize(recipes_name):
-    return '<h1>{}</h1>'.format(escape(recipes_name.capitalize()))
+    return wrap_in_tags("h1", recipe_name) + formatted_ingredients + formatted_instructions
 
 
+@app.route('/recipe/<recipe_name>/')
+def capitalize(recipe_name):
+    all_recipes = google_api.get_all_recipes()
+    recipe = next((item for item in all_recipes if item["name"] == recipe_name), None)
+    recipe_dict = google_api.get_recipe(recipe['id'])
+    return render_template('recipe.html', recipe_name=recipe_name, recipe_dict=recipe_dict)

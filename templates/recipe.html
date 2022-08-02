@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+
+<body>
+    <h1>{{recipe_name}}</h1>
+    <h2>Ingredients</h2>
+    <ul>
+        {% for value in recipe_dict['ingredients'] %}
+        <li> {{ value }} </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Instructions</h2>
+
+    <ol>
+        {% for value in recipe_dict['instructions'] %}
+        <li> {{ value }} </li>
+        {% endfor %}
+    </ol>
+
+</body>
+
+</html>
