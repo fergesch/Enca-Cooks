@@ -48,3 +48,9 @@ def capitalize(recipe_name):
         (item for item in all_recipes if item["name"] == recipe_name), None)
     recipe_dict = google_api.get_recipe(recipe['id'])
     return render_template('recipe.html', recipe_name=recipe_name, recipe_dict=recipe_dict)
+
+if __name__ == '__main__':
+    # This is used when running locally only. When deploying to Google App
+    # Engine, a webserver process such as Gunicorn will serve the app. You
+    # can configure startup instructions by adding `entrypoint` to app.yaml.
+    app.run(host='127.0.0.1', port=8080, debug=True)

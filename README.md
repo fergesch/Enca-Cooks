@@ -7,9 +7,19 @@
 - Create/upload recipes to drive
 - From site, add recipe ingredients to list (probably todoist)
 
-# Create environment
-- `conda env create -f environment.yml --prefix ./.venv`
-- `conda activate /Users/michaelferguson/Github/Enca-Cooks/.venv` or `conda activate ./.venv`
+# Create Conda environment
+```
+conda env create -f environment.yml --prefix ./.venv
+conda activate ./.venv
+```
+
+# Create regular environment
+```
+python3 -m venv .env    
+source .env/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
 
 # Flask App
 - `/templates`
@@ -19,10 +29,11 @@
 
 ## To run locally
 ```
-export FLASK_APP=app
+export FLASK_APP=main
 export FLASK_ENV=development
 flask run
 ```
+or `python main.py`
 
 
 # Local Credentials
