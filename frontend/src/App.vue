@@ -22,7 +22,7 @@ import HelloWorld from "./components/HelloWorld.vue";
       </nav>
     </div>
   </header>
-
+  <q-btn color="white" text-color="black" label="Standard" />
   <RouterView />
 </template>
 

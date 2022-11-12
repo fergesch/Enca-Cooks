@@ -33,3 +33,7 @@ npm run build
 ```sh
 npm run lint
 ```
+
+### Quasar Modules
+
+We got some stuff for Quasar UI Framework here https://quasar.dev
