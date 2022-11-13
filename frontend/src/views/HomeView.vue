@@ -18,18 +18,14 @@ export default {
   <main>
     <!-- https://quasar.dev/vue-components/list-and-list-items -->
     <div class="recipes">
-      <q-list>
-        <!-- <q-item v-for="(word,index) in RecipeStore.allRecipes" clickable v-ripple> -->
+      <q-list dark bordered separator style="max-width: 350x">
         <q-item v-for="(recipe, index) in RecipeStore.allRecipes" :key="index">
           <!-- q-item-section not needed but is nice for formatting -->
           <q-item-section>
-            <RouterLink to="/newRecipe">{{ recipe }}</RouterLink>
+            <RouterLink to="/recipe">{{ recipe }}</RouterLink>
           </q-item-section>
         </q-item>
       </q-list>
-      <!-- <div v-for="(recipe, index) in wordStore.words" :key="index">
-        <wordRow :wordMap="word" :n="index" />
-      </div> -->
     </div>
   </main>
 </template>

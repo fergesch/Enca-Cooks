@@ -1,30 +1,29 @@
-<script setup>
+<script>
 import { RouterLink, RouterView } from "vue-router";
 // import HelloWorld from "./components/HelloWorld.vue";
+
+export default {
+  setup() {
+    // const wordStore = useWordStore();
+    // return {
+    //   wordStore,
+    // };
+  },
+  // data: {
+  // },
+  components: {
+    RouterLink,
+    RouterView,
+  },
+  // methods: {
+  // },
+  mounted() {
+    console.log("App.vue mounted")
+  },
+}
 </script>
 
 <template>
-  <!-- <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/fergesch_logo.svg"
-      width="125"
-      height="125"
-    />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-  <q-btn color="white" text-color="black" label="Standard" />
-  <RouterView /> -->
-
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-dark text-white">
       <q-toolbar>
