@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
+// import HelloWorld from "./components/HelloWorld.vue";
 </script>
 
 <template>
@@ -26,7 +26,6 @@ import HelloWorld from "./components/HelloWorld.vue";
   <RouterView /> -->
 
   <q-layout view="hHh lpR fFf">
-
     <q-header elevated class="bg-dark text-white">
       <q-toolbar>
         <q-toolbar-title>
@@ -43,7 +42,6 @@ import HelloWorld from "./components/HelloWorld.vue";
     <q-page-container>
       <RouterView />
     </q-page-container>
-
   </q-layout>
 </template>
 
