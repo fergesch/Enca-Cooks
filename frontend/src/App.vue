@@ -4,7 +4,7 @@ import HelloWorld from "./components/HelloWorld.vue";
 </script>
 
 <template>
-  <header>
+  <!-- <header>
     <img
       alt="Vue logo"
       class="logo"
@@ -23,7 +23,28 @@ import HelloWorld from "./components/HelloWorld.vue";
     </div>
   </header>
   <q-btn color="white" text-color="black" label="Standard" />
-  <RouterView />
+  <RouterView /> -->
+
+  <q-layout view="hHh lpR fFf">
+
+    <q-header elevated class="bg-dark text-white">
+      <q-toolbar>
+        <q-toolbar-title>
+          <q-avatar square size="60px">
+            <img alt="Fergescg logo" src="@/assets/fergesch_logo.svg" />
+          </q-avatar>
+          Enca Cooks
+          <RouterLink to="/">Home</RouterLink>
+          <RouterLink to="/newRecipe">New Recipe</RouterLink>
+        </q-toolbar-title>
+      </q-toolbar>
+    </q-header>
+
+    <q-page-container>
+      <RouterView />
+    </q-page-container>
+
+  </q-layout>
 </template>
 
 <style scoped>
