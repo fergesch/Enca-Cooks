@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"backend/lib"
-	"os"
-	"log"
+	// "os"
+	// "log"
 )
 
 type Ingredient struct {
@@ -111,18 +111,19 @@ func uploadRecipe(c *gin.Context) {
 	}
 
 func main() {
-	router := gin.Default()
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-		log.Printf("Defaulting to port %s", port)
-	}
-	router.GET("/", greet)
-	router.GET("/recipe/:id", getRecipeById)
-	router.GET("/recipe/name/:name", getRecipeByName)
-	router.POST("/recipe", addRecipe)
-	router.POST("/upload", uploadRecipe)
-	http.Handle("/", router)
-	router.Run("127.0.0.1:" + port)
+	lib.Test_firestore()
+	// router := gin.Default()
+	// port := os.Getenv("PORT")
+	// if port == "" {
+	// 	port = "8080"
+	// 	log.Printf("Defaulting to port %s", port)
+	// }
+	// router.GET("/", greet)
+	// router.GET("/recipe/:id", getRecipeById)
+	// router.GET("/recipe/name/:name", getRecipeByName)
+	// router.POST("/recipe", addRecipe)
+	// router.POST("/upload", uploadRecipe)
+	// http.Handle("/", router)
+	// router.Run("127.0.0.1:" + port)
 }
 
