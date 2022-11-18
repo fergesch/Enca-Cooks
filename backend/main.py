@@ -24,17 +24,21 @@ def all_recipes():
         doc_id = doc.id
         doc_data = doc.to_dict()
         doc_list.append({'id': doc_id, 'name': doc_data["display_name"]})
-        print(f'{doc.id} => {doc_data}')
+        # print(f'{doc.id} => {doc_data}')
     return(doc_list)
-    # doc_ref = db.collection('recipes_test').document(u'brownies_test')
-    # doc = doc_ref.get()
-    # if doc.exists:
-    #     doc_data = doc.to_dict()
-    #     print(f'Document data: {doc_data}')
-    #     return(doc_data)
-    # else:
-    #     print(u'No such document!')
-    #     return({'No': 'Data'})
+
+@app.route('/recipe/<id>')
+def recipe(id):
+    db = firestore.Client(project='enca-cooks')
+    doc_ref = db.collection('recipes_test').document(id)
+    doc = doc_ref.get()
+    if doc.exists:
+        doc_data = doc.to_dict()
+        # print(f'Document data: {doc_data}')
+        return(doc_data)
+    else:
+        print(u'No such document!')
+        return('No Recipe')
 
 if __name__ == "__main__":
     app.run(debug=True)
