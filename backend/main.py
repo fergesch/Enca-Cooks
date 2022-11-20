@@ -24,7 +24,6 @@ def all_recipes():
         doc_id = doc.id
         doc_data = doc.to_dict()
         doc_list.append({'id': doc_id, 'name': doc_data["display_name"]})
-        # print(f'{doc.id} => {doc_data}')
     return(doc_list)
 
 @app.route('/recipe/<id>')
@@ -34,7 +33,6 @@ def recipe(id):
     doc = doc_ref.get()
     if doc.exists:
         doc_data = doc.to_dict()
-        # print(f'Document data: {doc_data}')
         return(doc_data)
     else:
         print(u'No such document!')
