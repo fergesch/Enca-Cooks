@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import os.path
+import re
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -106,8 +107,12 @@ def get_recipe(recipe_id):
         document = service.documents().get(documentId=recipe_id).execute()
 
         recipe_dict = {
+            'doc_id': recipe_id,
+            'title': document['title'],
+            'id': re.sub('[^A-Za-z0-9]+', '', document['title']),
             'ingredients': [],
-            'instructions': []
+            'instructions': [],
+            'link': []
         }
         section = None
         for i in document.get('body').get('content')[1:]:
@@ -118,6 +123,7 @@ def get_recipe(recipe_id):
             elif section and len(l) > 0:
                 recipe_dict[section].append(l)
 
+        recipe_dict['link'] = recipe_dict['link'][0] if len(recipe_dict['link']) > 0 else None
         return(recipe_dict)
         # print('The title of the document is: {}'.format(document.get('title')))
     except HttpError as err:
