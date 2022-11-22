@@ -1,0 +1,8 @@
+pandas
+numpy
+autopep8
+pytest
+ipython
+flask
+flask-cors
+google-cloud-firestore

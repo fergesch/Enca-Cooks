@@ -1,0 +1,14 @@
+{
+    "id": "mallowmars",
+    "display_name": "Marshmallow Cookies",
+    "ingredients": [
+        {"item": "1 cup flour", "tags": ["shortbread"]},
+        {"item": "2 cups sugar", "tags": ["shortbread", "marshmallow"]},
+        {"item": "1/2 tsp vanilla", "tags": ["shortbread"]},
+        {"item": "1/4 tsp vanilla", "tags": ["marshmallow"]}
+    ],
+    "instructions": [
+        {"step": "Preheat oven", "tags": ["shortbread"]},
+        {"step": "Fluff butter", "tags": ["shortbread"]}
+    ]
+}
